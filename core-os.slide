@@ -1,0 +1,43 @@
+CoreOS clustering: a Lightning Intro
+
+Randall McPherson
+rlmcpherson@gmail.com
+@rlmcpherson
+
+* CoreOS: Managed Linux
+
+* Features
+- smart load balancing
+- cluster management
+- service discovery and locking
+- isolated containers (docker)
+- minimal, auto-patched OS
+
+* 3 building blocks
+
+- Docker
+- Fleet
+- etcd
+
+* Docker
+
+- isolated containers 
+- run any linux OS on top of CoreOS
+- decouple containers from virtual machines / hardware
+
+* Fleet: Cluster Management
+
+- receive systemd unit files, schedule them onto cluster containers
+- run across multiple regions, availability zones, and regions
+- handle machine failures automatically
+
+* etcd
+- service discovery across cluster
+- replicated across entire cluster (raft protocol)
+
+for example: database configuration
+
+  http://127.0.0.1:4001/v1/keys/database
+
+* demo: EC2 cluster
+
