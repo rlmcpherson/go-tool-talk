@@ -1,0 +1,176 @@
+A Tour of Go Tools
+
+Randall McPherson
+rlmcpherson@gmail.com
+@rlmcpherson
+
+* Go, the language, is boring
+
+* That's a good thing
+
+* Go was designed with tools in mind. - Rob Pike
+
+* 
+
+.image gopherswrench.jpg
+.caption _Gopher_ by [[http://www.reneefrench.com][Renée French]]
+
+* design for tools
+
+regular syntax
+simple naming
+simple package design
+gofmt enables semantic tools (e.g. gofix)
+
+
+* Good tools 
+- make us productive 
+- help us design and write better software
+- arguably as important as the language itself
+
+
+* The go tool
+
+go get
+go build
+go run
+go test
+go vet
+go fmt
+...
+
+
+.link https://golang.org/cmd/go/
+
+* Packages and Commands
+Most go tools are both packages and commands
+Compose tools with tools and build new tools
+
+.link http://godoc.org/code.google.com/p/go.tools
+.link http://godoc.org/code.google.com/p/go.tools/cmd
+
+* IDE agnosticism
+
+cli-based tools can be used in most IDEs and editors
+...or with none at all
+
+some go team members use acme. it's...unusual.
+
+* some popular editor integrations
+
+.link https://github.com/fatih/vim-go vim-go
+
+.link https://github.com/DisposaBoy/GoSublime GoSublime
+
+.link https://github.com/joefitzgerald/go-plus Atom
+
+.link http://plugins.jetbrains.com/plugin/5047 IntelliJ/JetBrains($)
+
+* gofmt automates code formatting semantically
+
+- no more bikeshedding over code style
+- uniformity -> readability
+- enables building of other semantic tools 
+- >80% of open source code is gofmt-ed
+- can run on save or precommit
+
+* go list
+
+ $ go  list -f '{{.Deps}}' fmt
+ [errors io math os reflect runtime strconv sync sync/atomic syscall time unicode/utf8 unsafe]
+
+
+* godoc
+
+.link http://godoc.org/
+
+godoc.org indexes github, bitbucket, etc.
+the first place to go when evaluating unknown package
+it works locally too
+
+ godoc -http=:6060
+
+* go test
+
+testing package in standard lib
+tests written in regular go, no dsl
+
+ $ go test
+ PASS
+ 
+ $ go test -v
+ === RUN TestIndex
+ --- PASS: TestIndex (0.00 seconds)
+ PASS
+
+run recursively
+
+$ go test github.com/rlmcpherson/...
+
+testable examples appear in documentation
+
+.link http://godoc.org/github.com/rlmcpherson/s3gof3r#example-Bucket-GetReader
+
+
+* race detector: find race conditions in concurrent code
+
+ $ go test -race mypkg    // test the package
+ $ go run -race mysrc.go  // compile and run the program
+ $ go build -race mycmd   // build the command
+ $ go install -race mypkg // install the package
+
+
+* go test coverage
+
+ $ go test -coverprofile=c.out
+ $ go tool cover -html=c.out
+
+* go test resources
+
+.link http://youtu.be/ndmB0bj7eyw Testing Techniques - Andrew Gerrand
+.link http://youtu.be/oidiAJbtzDM How SourceGraph Tests in Go
+
+* golint
+
+.link https://github.com/golang/lint
+
+A linter for go source code 
+Output formatted in vim quickfix format, supported by many editors
+opinionated but useful
+idiomaticity check (even comments)
+
+* govet
+
+highlights common programmer mistakes
+
+ $ go tool vet source/directory
+
+.link http://godoc.org/code.google.com/p/go.tools/cmd/vet
+
+* oracle: 'a tool for answering questions about Go source code'
+
+What is the type of this expression?  What are its methods?
+What’s the value of this constant expression?
+Where is the definition of this identifier?
+What are the exported members of this imported package?
+
+* my dev environment, more or less 
+
+vim-go + Youcompleteme + syntastic
+
+ export GOPATH=~/dev/go
+ export GOROOT=/usr/local/go
+ # Go crosscompile
+ source ~/dev/golang-crosscompile/crosscompile.bash
+
+ export PATH=$PATH:$GOPATH/bin
+
+
+* even more tools
+
+pprof: cpu / memory / blocking profiling
+debugging: gdb support, go-specific debugger in development
+gcvis: visualize garbage collection
+ ...and many more
+
+
